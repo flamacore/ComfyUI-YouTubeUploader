@@ -39,6 +39,7 @@ ln -s f:/YouTubeUploader/comfyui_nodes /path/to/ComfyUI/custom_nodes/youtube_upl
 ```bash
 cd /path/to/ComfyUI
 pip install -r custom_nodes/youtube_uploader/requirements_comfyui.txt
+pip install -r custom_nodes/youtube_uploader/requirements.txt
 ```
 
 ## 🔧 Setup
