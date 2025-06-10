@@ -1,7 +1,7 @@
 [![Buy me a Coffee](https://buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://buymeacoffee.com/chao.k)
 
 
-Discamler: AI models have been utilized in creation of this repo.
+Disclaimer: AI models have been utilized in creation of this repo.
 
 # 🎬 YouTube Uploader Nodes for ComfyUI
 
@@ -20,26 +20,66 @@ Upload videos directly to YouTube from your ComfyUI workflows!
 
 ## 📦 Installation
 
-### Method 1: Copy to ComfyUI Custom Nodes
+## If ComfyUI Manager finds this repo, then the best way to install is from there. 
+
+Otherwise;
+
+### Method 1: Clone from GitHub (Recommended)
 
 ```bash
-# Copy the entire comfyui_nodes folder to your ComfyUI custom_nodes directory
-cp -r f:/YouTubeUploader/comfyui_nodes /path/to/ComfyUI/custom_nodes/youtube_uploader
+# Navigate to your ComfyUI custom_nodes directory
+cd /path/to/ComfyUI/custom_nodes
+
+# Clone the repository
+git clone https://github.com/flamacore/ComfyUI-YouTubeUploader.git
 ```
 
-### Method 2: Symbolic Link (Recommended for Development)
+**Windows (Command Prompt):**
+```cmd
+# Navigate to your ComfyUI custom_nodes directory
+cd C:\path\to\ComfyUI\custom_nodes
 
-```bash
-# Create symbolic link in ComfyUI custom_nodes
-ln -s f:/YouTubeUploader/comfyui_nodes /path/to/ComfyUI/custom_nodes/youtube_uploader
+# Clone the repository
+git clone https://github.com/flamacore/ComfyUI-YouTubeUploader.git
+```
+
+### Method 2: Download and Extract
+
+1. Download the repository as a ZIP file
+2. Extract to your ComfyUI `custom_nodes` directory
+3. Rename the folder to `ComfyUI-YouTubeUploader` if needed
+
+### Method 3: Manual Copy (Windows)
+
+```cmd
+# Copy the entire directory to your ComfyUI custom_nodes directory
+xcopy /E /I "C:\path\to\ComfyUI-YouTubeUploader" "C:\path\to\ComfyUI\custom_nodes\ComfyUI-YouTubeUploader"
 ```
 
 ### Install Dependencies
 
+**Windows (Command Prompt):**
+```cmd
+# Navigate to the node directory
+cd custom_nodes\ComfyUI-YouTubeUploader
+
+# Install Google API dependencies
+pip install -r requirements.txt
+
+# Install ComfyUI-specific dependencies
+pip install -r requirements_comfyui.txt
+```
+
+**Linux/macOS (Terminal):**
 ```bash
-cd /path/to/ComfyUI
-pip install -r custom_nodes/youtube_uploader/requirements_comfyui.txt
-pip install -r custom_nodes/youtube_uploader/requirements.txt
+# Navigate to the node directory
+cd custom_nodes/ComfyUI-YouTubeUploader
+
+# Install Google API dependencies
+pip install -r requirements.txt
+
+# Install ComfyUI-specific dependencies
+pip install -r requirements_comfyui.txt
 ```
 
 ## 🔧 Setup
@@ -114,7 +154,7 @@ pip install -r custom_nodes/youtube_uploader/requirements.txt
 - Verify OAuth consent screen is configured
 
 #### Video Upload Failed
-- Check file size (max 256MB)
+- Check file size (YouTube has upload limits based on account verification status)
 - Verify video format compatibility
 - Ensure stable internet connection
 
@@ -147,18 +187,6 @@ pip install -r custom_nodes/youtube_uploader/requirements.txt
 - Connect any image generation node
 - Supports batch processing
 - Auto-resize to YouTube specs
-
-## 📊 Analytics Integration
-
-### Upload Tracking
-- Video ID capture for analytics
-- Direct YouTube Studio links
-- Upload timestamp logging
-
-### Workflow Metrics
-- Processing time tracking
-- Success/failure rates
-- File size optimization stats
 
 ## 🤝 Contributing
 

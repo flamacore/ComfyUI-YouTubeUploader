@@ -91,21 +91,20 @@ class YouTubeUploaderNode:
             thumbnail_path = None
             if thumbnail is not None:
                 thumbnail_path = self._save_thumbnail(thumbnail)
-            
-            # Authenticate if needed
+              # Authenticate if needed
             if not self.uploader.service:
                 print("🔐 Authenticating with YouTube...")
                 self.uploader.authenticate()
-              # Upload video
+            
+            # Upload video
             print(f"🚀 Uploading video: {title}")
-            video_id = self.uploader.upload_video(
+            video_id, video_url, success = self.uploader.upload_video(
                 video_path, title, description, tags, privacy
             )
             
-            if video_id:
-                upload_url = f"https://www.youtube.com/watch?v={video_id}"
+            if success and video_id:
                 print(f"✅ Upload successful! Video ID: {video_id}")
-                print(f"🔗 Video URL: {upload_url}")
+                print(f"🔗 Video URL: {video_url}")
                 
                 # Set thumbnail if provided
                 if thumbnail_path and video_id:
@@ -114,7 +113,7 @@ class YouTubeUploaderNode:
                 # Cleanup temporary files
                 self._cleanup_temp_files(video_path, thumbnail_path)
                 
-                return (video_id, upload_url, True)
+                return (video_id, video_url, True)
             else:
                 print("❌ Upload failed")
                 return ("", "", False)
