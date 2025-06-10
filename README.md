@@ -1,7 +1,7 @@
 [![Buy me a Coffee](https://buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://buymeacoffee.com/chao.k)
 
 
-Disclaimer: AI models have been utilized in creation of this repo.
+Disclaimer: AI models have been utilized in creation of this repo and this repo is under HEAVY development. It works fine, pretty basic but still use with care please.
 
 # 🎬 YouTube Uploader Nodes for ComfyUI
 
