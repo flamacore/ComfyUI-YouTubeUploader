@@ -7,6 +7,9 @@ Discamler: AI models have been utilized in creation of this repo.
 
 Upload videos directly to YouTube from your ComfyUI workflows!
 
+<img width="1062" alt="ComfyUI_ow3dB7audK" src="https://github.com/user-attachments/assets/5e90807a-b777-420d-9fdc-d5fbc552ef94" />
+
+
 ## 🚀 Features
 
 - **Direct Upload**: Upload generated videos straight to YouTube
