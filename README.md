@@ -1,5 +1,7 @@
 [Support me and buy me a coffee :)](coff.ee/chao.k)
 
+<a href="https://www.buymeacoffee.com/chao.k"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=chao.k&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" /></a>
+
 Discamler: AI models have been utilized in creation of this repo.
 
 # 🎬 YouTube Uploader Nodes for ComfyUI
