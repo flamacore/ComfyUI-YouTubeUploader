@@ -104,22 +104,6 @@ pip install -r requirements_comfyui.txt
 - **Settings**: Privacy level, FPS, upload enabled
 - **Optional**: Audio track, custom thumbnail
 
-## 🎯 Workflow Examples
-
-### Basic Video Upload
-```
-[Video Generation] → [YouTube Uploader] 
-                     ↑
-[YouTube Auth] ──────┘
-```
-
-### Advanced with Audio and Thumbnail
-```
-[Video Generation] → [YouTube Uploader] ← [Audio Generation]
-                     ↑                    ↑
-[YouTube Auth] ──────┘                    [Thumbnail Generator]
-```
-
 ## ⚠️ Safety Features
 
 ### Upload Protection
@@ -162,31 +146,6 @@ pip install -r requirements_comfyui.txt
 - Restart ComfyUI after installation
 - Check console for error messages
 - Verify all dependencies are installed
-
-
-## 🎵 Audio Support
-
-### Supported Formats
-- WAV, MP3, FLAC (via librosa)
-- Raw audio tensors from ComfyUI nodes
-- Auto-conversion to AAC for upload
-
-### Audio Processing
-- Automatic sample rate conversion
-- Volume normalization
-- Sync with video duration
-
-## 🖼️ Thumbnail Features
-
-### Auto-Thumbnails
-- Uses first frame if no custom thumbnail
-- Automatic aspect ratio correction
-- Quality optimization for YouTube
-
-### Custom Thumbnails
-- Connect any image generation node
-- Supports batch processing
-- Auto-resize to YouTube specs
 
 ## 🤝 Contributing
 
