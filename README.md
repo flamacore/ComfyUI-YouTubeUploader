@@ -1,8 +1,14 @@
 [![Buy me a Coffee](https://buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://buymeacoffee.com/chao.k)
 
-# 🎬 ComfyUI YouTube Uploader
+
+Disclaimer: AI models have been utilized in creation of this repo and this repo is under HEAVY development. It works fine, pretty basic but still use with care please.
+
+# 🎬 YouTube Uploader Nodes for ComfyUI
 
 Upload videos directly to YouTube from your ComfyUI workflows! Perfect for AI-generated content creators.
+
+<img width="1062" alt="ComfyUI_ow3dB7audK" src="https://github.com/user-attachments/assets/5e90807a-b777-420d-9fdc-d5fbc552ef94" />
+
 
 ## ✨ Features
 
@@ -15,20 +21,66 @@ Upload videos directly to YouTube from your ComfyUI workflows! Perfect for AI-ge
 
 ## 📦 Installation
 
-### Via ComfyUI-Manager (Recommended)
+## If ComfyUI Manager finds this repo, then the best way to install is from there. 
 
-1. Install [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager)
-2. Search for "YouTube Uploader" in Custom Nodes
-3. Click Install
-4. Restart ComfyUI
+Otherwise;
 
-### Manual Installation
+### Method 1: Clone from GitHub (Recommended)
 
 ```bash
-cd ComfyUI/custom_nodes
-git clone https://github.com/yourusername/comfyui-youtube-uploader.git
-cd comfyui-youtube-uploader
+# Navigate to your ComfyUI custom_nodes directory
+cd /path/to/ComfyUI/custom_nodes
+
+# Clone the repository
+git clone https://github.com/flamacore/ComfyUI-YouTubeUploader.git
+```
+
+**Windows (Command Prompt):**
+```cmd
+# Navigate to your ComfyUI custom_nodes directory
+cd C:\path\to\ComfyUI\custom_nodes
+
+# Clone the repository
+git clone https://github.com/flamacore/ComfyUI-YouTubeUploader.git
+```
+
+### Method 2: Download and Extract
+
+1. Download the repository as a ZIP file
+2. Extract to your ComfyUI `custom_nodes` directory
+3. Rename the folder to `ComfyUI-YouTubeUploader` if needed
+
+### Method 3: Manual Copy (Windows)
+
+```cmd
+# Copy the entire directory to your ComfyUI custom_nodes directory
+xcopy /E /I "C:\path\to\ComfyUI-YouTubeUploader" "C:\path\to\ComfyUI\custom_nodes\ComfyUI-YouTubeUploader"
+```
+
+### Install Dependencies
+
+**Windows (Command Prompt):**
+```cmd
+# Navigate to the node directory
+cd custom_nodes\ComfyUI-YouTubeUploader
+
+# Install Google API dependencies
 pip install -r requirements.txt
+
+# Install ComfyUI-specific dependencies
+pip install -r requirements_comfyui.txt
+```
+
+**Linux/macOS (Terminal):**
+```bash
+# Navigate to the node directory
+cd custom_nodes/ComfyUI-YouTubeUploader
+
+# Install Google API dependencies
+pip install -r requirements.txt
+
+# Install ComfyUI-specific dependencies
+pip install -r requirements_comfyui.txt
 ```
 
 ## 🔧 Setup
@@ -38,37 +90,20 @@ pip install -r requirements.txt
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create project and enable YouTube Data API v3
 3. Create OAuth 2.0 credentials (Desktop application)
-4. Download `client_secret.json` to the node folder OR use the Auth node
+4. Note your Client ID and Client Secret
 
-### 2. Basic Usage
+### 2. Node Configuration
 
-1. **YouTube Auth Node**: Authenticate once per session
-   - Input your Client ID and Client Secret
-   - Set "Authenticate Now" to True
-   - Follow browser authentication
+#### YouTube Auth Node
+- **Input**: Client ID, Client Secret, Authenticate Now
+- **Output**: Authentication status and channel info
+- **Usage**: Set up once per session
 
-2. **YouTube Uploader Node**: Upload your videos
-   - Connect video input from any generation node
-   - Set title, description, tags
-   - **Important**: Set "upload_enabled" to True to actually upload
-   - Choose privacy setting (private/unlisted/public)
-
-## 🎯 Node Reference
-
-### YouTube Auth Node 🔐
-- **Inputs**: Client ID, Client Secret, Authenticate Now
-- **Outputs**: Authentication status, Channel info
-- **Purpose**: One-time authentication setup
-
-### YouTube Uploader Node 🎬
-- **Required Inputs**: 
-  - Video (IMAGE sequence)
-  - Title, Description, Tags
-  - Privacy, FPS, Upload Enabled
-- **Optional Inputs**: 
-  - Audio (AUDIO)
-  - Thumbnail (IMAGE)
-- **Outputs**: Video ID, Upload URL, Success status
+#### YouTube Uploader Node
+- **Video Input**: Connect from any video generation node
+- **Text Inputs**: Title, description, tags
+- **Settings**: Privacy level, FPS, upload enabled
+- **Optional**: Audio track, custom thumbnail
 
 ## ⚠️ Safety Features
 
@@ -98,17 +133,15 @@ pip install -r requirements.txt
 - Ensure YouTube Data API v3 is enabled
 - Verify OAuth consent screen is configured
 
-**Upload Failed**
-- Check file size limits (256MB max)
-- Verify internet connection
-- Ensure video format is compatible
+#### Video Upload Failed
+- Check file size (YouTube has upload limits based on account verification status)
+- Verify video format compatibility
+- Ensure stable internet connection
 
-## 📋 Requirements
-
-- Python 3.8+
-- ComfyUI
-- Google Cloud Project with YouTube API enabled
-- Internet connection for uploads
+#### Node Not Appearing
+- Restart ComfyUI after installation
+- Check console for error messages
+- Verify all dependencies are installed
 
 ## 🤝 Contributing
 
