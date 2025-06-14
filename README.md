@@ -1,41 +1,34 @@
 [![Buy me a Coffee](https://buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://buymeacoffee.com/chao.k)
 
+# 🎬 ComfyUI YouTube Uploader
 
-Discamler: AI models have been utilized in creation of this repo.
+Upload videos directly to YouTube from your ComfyUI workflows! Perfect for AI-generated content creators.
 
-# 🎬 YouTube Uploader Nodes for ComfyUI
-
-Upload videos directly to YouTube from your ComfyUI workflows!
-
-## 🚀 Features
+## ✨ Features
 
 - **Direct Upload**: Upload generated videos straight to YouTube
-- **Custom Thumbnails**: Set custom thumbnails for your videos
+- **Custom Thumbnails**: Set custom thumbnails for your videos  
 - **Audio Support**: Include audio in your uploads
 - **Safety Features**: Upload protection to prevent accidents
 - **Shorts Optimized**: Perfect for vertical video workflows
+- **ComfyUI-Manager Compatible**: Easy installation and updates
 
 ## 📦 Installation
 
-### Method 1: Copy to ComfyUI Custom Nodes
+### Via ComfyUI-Manager (Recommended)
+
+1. Install [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager)
+2. Search for "YouTube Uploader" in Custom Nodes
+3. Click Install
+4. Restart ComfyUI
+
+### Manual Installation
 
 ```bash
-# Copy the entire comfyui_nodes folder to your ComfyUI custom_nodes directory
-cp -r f:/YouTubeUploader/comfyui_nodes /path/to/ComfyUI/custom_nodes/youtube_uploader
-```
-
-### Method 2: Symbolic Link (Recommended for Development)
-
-```bash
-# Create symbolic link in ComfyUI custom_nodes
-ln -s f:/YouTubeUploader/comfyui_nodes /path/to/ComfyUI/custom_nodes/youtube_uploader
-```
-
-### Install Dependencies
-
-```bash
-cd /path/to/ComfyUI
-pip install -r custom_nodes/youtube_uploader/requirements_comfyui.txt
+cd ComfyUI/custom_nodes
+git clone https://github.com/yourusername/comfyui-youtube-uploader.git
+cd comfyui-youtube-uploader
+pip install -r requirements.txt
 ```
 
 ## 🔧 Setup
@@ -45,135 +38,96 @@ pip install -r custom_nodes/youtube_uploader/requirements_comfyui.txt
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create project and enable YouTube Data API v3
 3. Create OAuth 2.0 credentials (Desktop application)
-4. Note your Client ID and Client Secret
+4. Download `client_secret.json` to the node folder OR use the Auth node
 
-### 2. Node Configuration
+### 2. Basic Usage
 
-#### YouTube Auth Node
-- **Input**: Client ID, Client Secret, Authenticate Now
-- **Output**: Authentication status and channel info
-- **Usage**: Set up once per session
+1. **YouTube Auth Node**: Authenticate once per session
+   - Input your Client ID and Client Secret
+   - Set "Authenticate Now" to True
+   - Follow browser authentication
 
-#### YouTube Uploader Node
-- **Video Input**: Connect from any video generation node
-- **Text Inputs**: Title, description, tags
-- **Settings**: Privacy level, FPS, upload enabled
-- **Optional**: Audio track, custom thumbnail
+2. **YouTube Uploader Node**: Upload your videos
+   - Connect video input from any generation node
+   - Set title, description, tags
+   - **Important**: Set "upload_enabled" to True to actually upload
+   - Choose privacy setting (private/unlisted/public)
 
-## 🎯 Workflow Examples
+## 🎯 Node Reference
 
-### Basic Video Upload
-```
-[Video Generation] → [YouTube Uploader] 
-                     ↑
-[YouTube Auth] ──────┘
-```
+### YouTube Auth Node 🔐
+- **Inputs**: Client ID, Client Secret, Authenticate Now
+- **Outputs**: Authentication status, Channel info
+- **Purpose**: One-time authentication setup
 
-### Advanced with Audio and Thumbnail
-```
-[Video Generation] → [YouTube Uploader] ← [Audio Generation]
-                     ↑                    ↑
-[YouTube Auth] ──────┘                    [Thumbnail Generator]
-```
+### YouTube Uploader Node 🎬
+- **Required Inputs**: 
+  - Video (IMAGE sequence)
+  - Title, Description, Tags
+  - Privacy, FPS, Upload Enabled
+- **Optional Inputs**: 
+  - Audio (AUDIO)
+  - Thumbnail (IMAGE)
+- **Outputs**: Video ID, Upload URL, Success status
 
 ## ⚠️ Safety Features
 
-### Upload Protection
-- **upload_enabled**: Must be set to `True` to actually upload
-- **Status Display**: Shows current upload status
-
-### Testing Mode
-1. Set `upload_enabled` to `False`
-2. Test your workflow
-3. Check video preview
-4. Enable upload only when ready
-
-## 🎨 Node Features
-
-### YouTube Uploader Node
-- **Smart Video Conversion**: Handles image sequences and single frames
-- **Audio Integration**: Automatically combines video with audio
+- **Upload Protection**: Must explicitly enable uploads
+- **Testing Mode**: Test workflows without uploading
 - **Error Handling**: Graceful failure with detailed messages
+- **Dependency Checks**: Works even if dependencies missing
 
-### YouTube Auth Node
-- **One-Time Setup**: Authenticate once per session
-- **Channel Info**: Displays connected channel details
-- **Credential Management**: Secure handling of API keys
+## 🎵 Supported Formats
+
+- **Video**: Any format ComfyUI can generate
+- **Audio**: WAV, MP3, FLAC (auto-converted to AAC)
+- **Thumbnails**: Any image format (auto-resized)
 
 ## 🔍 Troubleshooting
 
 ### Common Issues
 
-#### Authentication Failed
-- Check Client ID and Secret
+**"Dependencies not available"**
+```bash
+cd ComfyUI/custom_nodes/comfyui-youtube-uploader
+pip install -r requirements.txt
+```
+
+**Authentication Failed**
+- Check Client ID/Secret are correct
 - Ensure YouTube Data API v3 is enabled
 - Verify OAuth consent screen is configured
 
-#### Video Upload Failed
-- Check file size (max 256MB)
-- Verify video format compatibility
-- Ensure stable internet connection
+**Upload Failed**
+- Check file size limits (256MB max)
+- Verify internet connection
+- Ensure video format is compatible
 
-#### Node Not Appearing
-- Restart ComfyUI after installation
-- Check console for error messages
-- Verify all dependencies are installed
+## 📋 Requirements
 
-
-## 🎵 Audio Support
-
-### Supported Formats
-- WAV, MP3, FLAC (via librosa)
-- Raw audio tensors from ComfyUI nodes
-- Auto-conversion to AAC for upload
-
-### Audio Processing
-- Automatic sample rate conversion
-- Volume normalization
-- Sync with video duration
-
-## 🖼️ Thumbnail Features
-
-### Auto-Thumbnails
-- Uses first frame if no custom thumbnail
-- Automatic aspect ratio correction
-- Quality optimization for YouTube
-
-### Custom Thumbnails
-- Connect any image generation node
-- Supports batch processing
-- Auto-resize to YouTube specs
-
-## 📊 Analytics Integration
-
-### Upload Tracking
-- Video ID capture for analytics
-- Direct YouTube Studio links
-- Upload timestamp logging
-
-### Workflow Metrics
-- Processing time tracking
-- Success/failure rates
-- File size optimization stats
+- Python 3.8+
+- ComfyUI
+- Google Cloud Project with YouTube API enabled
+- Internet connection for uploads
 
 ## 🤝 Contributing
 
-### Development Setup
 1. Fork the repository
 2. Create feature branch
-3. Test with multiple ComfyUI versions
+3. Test with ComfyUI-Manager
 4. Submit pull request
 
-### Adding Features
-- Follow ComfyUI node conventions
-- Add comprehensive error handling
-- Include unit tests for core functions
-- Update documentation
+## 📄 License
+
+MIT License - see LICENSE file for details
 
 ## 🆘 Support
 
-- GitHub Issues: Report bugs and feature requests
+- GitHub Issues: Bug reports and features
+- ComfyUI Discord: Community support
 
 ---
 
 **⚠️ Important**: Always test uploads with private videos first. Respect YouTube's Terms of Service and community guidelines.
+
+**💡 Tip**: Use with AI video generation nodes for automated content creation workflows!

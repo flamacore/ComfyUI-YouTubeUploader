@@ -5,14 +5,13 @@ import torch
 import numpy as np
 from PIL import Image
 import cv2
-import folder_paths
 
 # Make sure we can import from the same directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
     sys.path.append(current_dir)
 
-# Try absolute import
+# Try absolute import with better error handling
 try:
     from youtube_uploader import YouTubeUploader, GOOGLE_APIS_AVAILABLE
     from config import Config
@@ -20,8 +19,8 @@ try:
         raise ImportError("Google API libraries not installed")
     DEPENDENCIES_AVAILABLE = True
 except ImportError as e:
-    print(f"Error: Cannot load YouTube uploader. {e}")
-    print("Please install dependencies with: pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client")
+    print(f"Warning: YouTube uploader dependencies not available: {e}")
+    print("Please install dependencies with: pip install -r requirements.txt")
     YouTubeUploader = None
     Config = None
     DEPENDENCIES_AVAILABLE = False
@@ -71,23 +70,28 @@ class YouTubeUploaderNode:
 
     def __init__(self):
         if not DEPENDENCIES_AVAILABLE:
-            raise RuntimeError("YouTube Uploader module not available. Check youtube_uploader.py file.")
-        if not DEPENDENCIES_AVAILABLE:
-            raise RuntimeError("YouTube Uploader dependencies not installed. Please run: pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client")
-        self.uploader = YouTubeUploader()
-        self.config = Config()
+            print("YouTube Uploader dependencies not available. Node will return dummy values.")
+            self.uploader = None
+            self.config = None
+        else:
+            self.uploader = YouTubeUploader()
+            self.config = Config()
         
     def upload_to_youtube(self, video, title, description, tags, privacy, fps, upload_enabled, audio=None, thumbnail=None):
         """Upload video to YouTube"""
         
+        if not DEPENDENCIES_AVAILABLE:
+            return ("DEPS_NOT_AVAILABLE", "Dependencies not installed", False)
+        
         if not upload_enabled:
             print("⚠️ YouTube upload is disabled. Set 'upload_enabled' to True to upload.")
-            return ("", "", False)
+            return ("UPLOAD_DISABLED", "Upload disabled", False)
         
         try:
             # Convert image sequence to video file
             video_path = self._create_video_from_images(video, fps, audio)
-              # Prepare thumbnail if provided
+            
+            # Prepare thumbnail if provided
             thumbnail_path = None
             if thumbnail is not None:
                 thumbnail_path = self._save_thumbnail(thumbnail)
@@ -96,14 +100,14 @@ class YouTubeUploaderNode:
             if not self.uploader.service:
                 print("🔐 Authenticating with YouTube...")
                 self.uploader.authenticate()
-              # Upload video
+            
+            # Upload video
             print(f"🚀 Uploading video: {title}")
-            video_id = self.uploader.upload_video(
+            video_id, upload_url, success = self.uploader.upload_video(
                 video_path, title, description, tags, privacy
             )
             
-            if video_id:
-                upload_url = f"https://www.youtube.com/watch?v={video_id}"
+            if success:
                 print(f"✅ Upload successful! Video ID: {video_id}")
                 print(f"🔗 Video URL: {upload_url}")
                 
@@ -117,11 +121,12 @@ class YouTubeUploaderNode:
                 return (video_id, upload_url, True)
             else:
                 print("❌ Upload failed")
-                return ("", "", False)
+                self._cleanup_temp_files(video_path, thumbnail_path)
+                return ("UPLOAD_FAILED", "Upload failed", False)
                 
         except Exception as e:
             print(f"❌ Error uploading to YouTube: {str(e)}")
-            return ("", "", False)
+            return ("ERROR", f"Error: {str(e)}", False)
     
     def _create_video_from_images(self, images, fps, audio=None):
         """Convert ComfyUI image sequence to video file"""
@@ -262,7 +267,7 @@ class YouTubeUploaderNode:
         """Set custom thumbnail for uploaded video"""
         try:
             # This requires additional YouTube API permissions
-            self.uploader.youtube.thumbnails().set(
+            self.uploader.service.thumbnails().set(
                 videoId=video_id,
                 media_body=thumbnail_path
             ).execute()
@@ -307,6 +312,9 @@ class YouTubeAuthNode:
 
     def authenticate_youtube(self, client_id, client_secret, authenticate_now):
         """Authenticate with YouTube API"""
+        
+        if not DEPENDENCIES_AVAILABLE:
+            return (False, "Dependencies not installed")
         
         if not authenticate_now:
             return (False, "Authentication not requested")
